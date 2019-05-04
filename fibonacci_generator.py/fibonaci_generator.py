@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# fibonacci.py
 # Fibinacci sequence generator.
 # Author: https://github.com/idiego209
 
