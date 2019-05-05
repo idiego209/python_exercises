@@ -1,6 +1,9 @@
+#!/usr/bin/env python
+# list_diff.py
+# Given two lists with one item in difference return diff element.
+# Author: https://github.com/idiego209
 # Assume input provided is two lists of ints.
-# No repeating numbers one element is different.
-# Return element found that is different.
+# No repeating numbers only one element is different.
 
 def findDiffSets(complete_list, partial_list):
   diff_element = set(complete_list) - set(partial_list)
