@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# pwd.py
+# PWD implementation in python.
+# Author: https://github.com/idiego209
 import os
 
 def getInode(filename):
