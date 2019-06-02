@@ -7,34 +7,32 @@ import os
 import hashlib
 
 def getFileSize(file):
+  """
+  Arguments:
+    string: file Filename to be checked.
+  Returns:
+    int: s.st_size File size in bytes.
+  """
   s = os.stat(file)
   return s.st_size
 
-def hashContent(content):
-  new_hash = hashlib.md5()
-  new_hash.update(content)
-  new_hash_digest = new_hash.digest()
-  return new_hash_digest
+def hashData(filename):
+  """
+  Hashes filename contents.
+  Arguments:
+    string: filename Filename to be hashed.
+  Returns:
+    string: hash.digest() Hash digest.
+  """
+  hash = hashlib.md5()
+  file_data = getContent(filename)
+  hash.update(file_data)
+  return hash.digest()
 
 def getContent(filename):
   with open(filename, 'r') as f:
-    content = f.read()
-  return content
-
-def duplicate(file1, file2):
-  """
-  Checks if file1 is duplicate of file2
-  Arguments:
-    string: file1, file2 files to check.
-  Returns:
-    boolean: True if duplicate else False
-  """
-  file1_content = getContent(file1)
-  file2_content = getContent(file2)
-  file1_hash = hashContent(file1_content)
-  file2_hash = hashContent(file2_content)
-
-  return file1_hash == file2_hash
+    file_data = f.read()
+  return file_data
 
 def getDuplicates(directories):
   """
@@ -44,18 +42,24 @@ def getDuplicates(directories):
   Returns:
     list: duplicates Files that are duplicates.
   """
-  file_size_dic = {}
+  size = {}
+  hash_data = {}
   files_to_delete = []
 
   for dir in directories:
     for file in os.listdir(dir):
       file_size = getFileSize(os.path.join(dir, file))
-      if file_size not in file_size_dic:
-        file_size_dic[file_size] = os.path.join(dir, file)
-      else:
-        file2 = file_size_dic[file_size]
-        if duplicate(os.path.join(dir, file), file2):
-          files_to_delete.append(os.path.join(dir, file))
+      if file_size not in size:
+        size[file_size] = os.path.join(dir, file)
+        continue
+      file1_hash = hashData(os.path.join(dir, file))
+      if file1_hash in hash_data:
+        files_to_delete.append(os.path.join(dir, file))
+        continue
+      file2_hash = hashData(size[file_size])
+      if file1_hash == file2_hash:
+        hash_data[file1_hash] = os.path.join(dir, file)
+        files_to_delete.append(os.path.join(dir, file))
   return files_to_delete
 
 def dedupe(directories):

@@ -9,14 +9,14 @@
 class Solution(object):
     def IntToChar(self, substring, C):
         int_to_C = 0
-        
+
         for char in substring:
             if char == C:
                 return int_to_C
             else:
                 int_to_C += 1
         return int_to_C
-    
+
     def shortestToChar(self, S, C):
         """
         :type S: str
@@ -27,7 +27,7 @@ class Solution(object):
         current_val = 0
         substring_index = 0
         result = []
-        
+
         for char in S:
             substring = S[substring_index:]
             if C not in substring:
